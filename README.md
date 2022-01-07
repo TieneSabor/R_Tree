@@ -35,7 +35,7 @@ make all
     - Every action starts from certain node and change only the subtree where the certain node is the root. Thus if we want to modify the whole tree, we need to find the root first.
     - The root node may changes everytime we insert a new item. Therefore we must find the new root after every insertion.
 #### To Build a new tree:
-```c++=
+```cpp=
 #include "rtree.hpp"
 /* ... */
 // Initialize the first node.
@@ -50,7 +50,7 @@ first_node.rt_root()->rt_insert(2,2,3,3);
 first_node.rt_root()->rt_print();
 ```
 #### DO a KNN search:
-```c++=
+```c=
 /* Assume we already have a tree */
 // We want to find top 3 nearest items relate to (1.5,1.5) in the R tree.
 std::vector<rtree*> result2;
