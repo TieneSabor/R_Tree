@@ -22,13 +22,13 @@ make all
 ```
 ### Test Code
 - Test Code did following things.
-    [//]: <> - Originally insert 7 edges, where 6 of them are on the same line.
+    <!-- - Originally insert 7 edges, where 6 of them are on the same line. -->
     - Insert edges from ./data/nodes01.txt.
     - Print the tree.
-    [//]: <> - Search which node contains the point (1.5,1.5)
+    <!-- - Search which node contains the point (1.5,1.5) -->
     - Search 3 nearest item in the graph to (4,2.5)
-    [//]: <> - Delete an item
-    [//]: <> - Print again
+    <!-- - Delete an item -->
+    <!-- - Print again -->
 ### APIs
 - Please refer to "rtree.hpp" in ./inc for detailed function definition.
 - Some notes:
