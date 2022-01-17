@@ -166,7 +166,13 @@ int rtree::rt_addchild(rtree* child_ptr){
         pxmax = MIN_DOUBLE;
         pymax = MIN_DOUBLE;
         rtree* new_node = new rtree;
-        new_node->set_leaf(true);
+        /* The new node will be a leaf if and only if
+         * its sibling that 'splitted' this new node 
+         * is also a leaf.
+         */
+        if(is_leaf()){
+            new_node->set_leaf(true);
+        }
         // Put seeds into both nodes
         new_node->rt_addchild(seedi_ptr);
         new_node->set_increment(seedi_ptr->pxmin,seedi_ptr->pymin,seedi_ptr->pxmax,seedi_ptr->pymax);
@@ -322,13 +328,21 @@ int rtree::knn_iter(double x, double y, int k, std::priority_queue<std::pair<dou
         double dist=0;
         if(child[i]->is_edge()){// children are items and also edge.
             double norm = sqrt((child[i]->px2-child[i]->px1)*(child[i]->px2-child[i]->px1)+(child[i]->py2-child[i]->py1)*(child[i]->py2-child[i]->py1));
-            double cos = (child[i]->px2-child[i]->px1)/norm;
-            double sin = (child[i]->py2-child[i]->py1)/norm;
-            double xrot =  cos*(x-(child[i]->px1+child[i]->px2)/2) + sin*(y-(child[i]->py1+child[i]->py2)/2);
-            double yrot = -sin*(x-(child[i]->px1+child[i]->px2)/2) + cos*(y-(child[i]->py1+child[i]->py2)/2);
-            double xtrim = max(abs(xrot)-norm/2,0);
-            double ytrim = max(abs(yrot),0);
-            dist = sqrt(xtrim*xtrim+ytrim*ytrim);
+            // In case the edge is actually close to a 'point'.
+            if(norm>1e-6)
+            {
+                double cos = (child[i]->px2-child[i]->px1)/norm;
+                double sin = (child[i]->py2-child[i]->py1)/norm;
+                double xrot =  cos*(x-(child[i]->px1+child[i]->px2)/2) + sin*(y-(child[i]->py1+child[i]->py2)/2);
+                double yrot = -sin*(x-(child[i]->px1+child[i]->px2)/2) + cos*(y-(child[i]->py1+child[i]->py2)/2);
+                double xtrim = max(abs(xrot)-norm/2,0);
+                double ytrim = max(abs(yrot),0);
+                dist = sqrt(xtrim*xtrim+ytrim*ytrim);
+            }
+            else
+            {
+                dist = sqrt(pow(x-child[i]->px1,2)+pow(y-child[i]->py1,2));
+            }
             item_result->push(std::make_pair(dist,child[i]));
             //std::cout<<"node "<<index<<"'s child node "<<child[i]->index<<" is an edge with dist "<<dist<<"\r\n";
             //std::cout<<"child node "<<child[i]->index<<" norm:"<<norm<<", cos:"<<cos<<", sin:"<<sin<<", xrot:"<<xrot<<", yrot:"<<yrot<<", xtrim:"<<xtrim<<"\r\n";
