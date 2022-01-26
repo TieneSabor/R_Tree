@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <stdlib.h>
 
 double violent_knn(double* a, int n, int k, double x, double y, std::priority_queue<std::pair<double,int>>* item_result){
     auto before = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
@@ -12,6 +13,24 @@ double violent_knn(double* a, int n, int k, double x, double y, std::priority_qu
 	double x2=a[4*i+2];
 	double y2=a[4*i+3];
 	double norm = sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
+	double dist;
+	
+	if(norm>1e-6)
+	{
+	 double cos = ( x2- x1)/norm;
+	 double sin = ( y2- y1)/norm;
+	 //double sin = sqrt(1-pow(cos,2));
+	 double xrot =  cos*(x-(x1+x2)/2) + sin*(y-( y1+ y2)/2);
+	 double yrot = -sin*(x-(x1+x2)/2) + cos*(y-( y1+ y2)/2);
+	 double xtrim = std::fmax(abs(xrot)-norm/2,0);
+	 double ytrim = std::fmax(abs(yrot),0);
+	 dist = sqrt(xtrim*xtrim+ytrim*ytrim);
+	}
+	else
+	{
+	 dist = sqrt(pow(x- x1,2)+pow(y- y1,2));
+	}
+/*
 	double cos;
 	if(norm==0){
 	    cos=0;
@@ -26,6 +45,7 @@ double violent_knn(double* a, int n, int k, double x, double y, std::priority_qu
 	double xtrim = std::fmax(abs(xrot)-norm/2,0);
 	double ytrim = std::fmax(abs(yrot),0);
 	double dist = sqrt(xtrim*xtrim+ytrim*ytrim);
+*/
 	item_result->push(std::make_pair(dist, i));
 	while(item_result->size()>k){
             item_result->pop();
@@ -50,9 +70,10 @@ int main(){
 
     rtree first_node;
     rtree* root;
-    double a[1000];
     int num=0;
     first_node.set_the_first_node();
+    int offset=0;
+    /*
     for(int i=0; i<vstr.size(); i++){
         double x1,y1,x2,y2;
         sscanf(vstr.at(i).c_str(),"x1: %lf, y1: %lf, x2: %lf, y2: %lf, map: jj_demo",&x1,&y1,&x2,&y2);
@@ -63,56 +84,40 @@ int main(){
 	a[4*i+3] = y2;
 	num++;
     }
-    for(int i=0; i<vstr.size(); i++){
+    offset+=vstr.size();
+    *//*
+    int exptime = 200;
+    double* a = new double[4*70*exptime];
+    for(int i=0; i<vstr.size()*exptime; i++){
         double x1,y1,x2,y2;
-        sscanf(vstr.at(i).c_str(),"x1: %lf, y1: %lf, x2: %lf, y2: %lf, map: jj_demo",&x1,&y1,&x2,&y2);
+        sscanf(vstr.at(i%vstr.size()).c_str(),"x1: %lf, y1: %lf, x2: %lf, y2: %lf, map: jj_demo",&x1,&y1,&x2,&y2);
         first_node.rt_root()->rt_insert_edge(x1,y1,x2,y2);
-	a[4*i]   = x1;
-	a[4*i+1] = y1;
-	a[4*i+2] = x2;
-	a[4*i+3] = y2;
+	a[4*(i)]   = x1;
+	a[4*(i)+1] = y1;
+	a[4*(i)+2] = x2;
+	a[4*(i)+3] = y2;
 	num++;
     }
-    for(int i=0; i<vstr.size(); i++){
+    */
+
+    srand(time(NULL));
+    int testsize = 100;
+    double* a = new double[4*testsize];
+    double max=100,min=-100;
+    for(int i=0; i<testsize; i++){
         double x1,y1,x2,y2;
-        sscanf(vstr.at(i).c_str(),"x1: %lf, y1: %lf, x2: %lf, y2: %lf, map: jj_demo",&x1,&y1,&x2,&y2);
+	x1 = (max - min) * rand() / (RAND_MAX + 1.0) + min;
+	y1 = (max - min) * rand() / (RAND_MAX + 1.0) + min;
+	x2 = (max - min) * rand() / (RAND_MAX + 1.0) + min;
+	y2 = (max - min) * rand() / (RAND_MAX + 1.0) + min;
         first_node.rt_root()->rt_insert_edge(x1,y1,x2,y2);
-	a[4*i]   = x1;
-	a[4*i+1] = y1;
-	a[4*i+2] = x2;
-	a[4*i+3] = y2;
+	a[4*(i)]   = x1;
+	a[4*(i)+1] = y1;
+	a[4*(i)+2] = x2;
+	a[4*(i)+3] = y2;
 	num++;
     }
-    for(int i=0; i<vstr.size(); i++){
-        double x1,y1,x2,y2;
-        sscanf(vstr.at(i).c_str(),"x1: %lf, y1: %lf, x2: %lf, y2: %lf, map: jj_demo",&x1,&y1,&x2,&y2);
-        first_node.rt_root()->rt_insert_edge(x1,y1,x2,y2);
-	a[4*i]   = x1;
-	a[4*i+1] = y1;
-	a[4*i+2] = x2;
-	a[4*i+3] = y2;
-	num++;
-    }
-    for(int i=0; i<vstr.size(); i++){
-        double x1,y1,x2,y2;
-        sscanf(vstr.at(i).c_str(),"x1: %lf, y1: %lf, x2: %lf, y2: %lf, map: jj_demo",&x1,&y1,&x2,&y2);
-        first_node.rt_root()->rt_insert_edge(x1,y1,x2,y2);
-	a[4*i]   = x1;
-	a[4*i+1] = y1;
-	a[4*i+2] = x2;
-	a[4*i+3] = y2;
-	num++;
-    }
-    for(int i=0; i<vstr.size(); i++){
-        double x1,y1,x2,y2;
-        sscanf(vstr.at(i).c_str(),"x1: %lf, y1: %lf, x2: %lf, y2: %lf, map: jj_demo",&x1,&y1,&x2,&y2);
-        first_node.rt_root()->rt_insert_edge(x1,y1,x2,y2);
-	a[4*i]   = x1;
-	a[4*i+1] = y1;
-	a[4*i+2] = x2;
-	a[4*i+3] = y2;
-	num++;
-    }
+
     /*
     first_node.rt_root()->rt_insert_edge(1,1,2,2);
     first_node.rt_root()->rt_insert_edge(2,2,3,3);
@@ -128,7 +133,7 @@ int main(){
     //std::cout<<"Search in the tree. \r\n";
     std::vector<rtree*> result1, result2;
     std::priority_queue<std::pair<double,int>> q;
-    double px = 4,py = 2.5;
+    double px = 100,py = 100;
     //root->rt_search(px,py,&result1);
     //for(int i=0;i<result1.size();i++){
     //    std::cout<<"the node contains ("<<px<<","<<py<<"): "<<result1[i]->get_index()<<"\r\n";

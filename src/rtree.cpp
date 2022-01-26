@@ -88,13 +88,13 @@ int rtree::check_include(double xmin, double ymin, double xmax, double ymax){
 }
 
 double rtree::get_increment(double xmin, double ymin, double xmax, double ymax){
-    double lxmin, lymin, lxmax, lymax;
     if(check_include(xmin, ymin, xmax, ymax)){
-        std::cout<<"the object going to be inserted is already included in this node:"<<index<<" \r\n";
+        //std::cout<<"the object going to be inserted is already included in this node:"<<index<<" \r\n";
         return 0;
     }
     else{
-        return ((max(xmax,pxmax)-min(xmin,pxmin))*(max(ymax,pymax)-min(ymin,pymin)))-((pxmax-pxmin)*(pymax-pymin)); 
+        //return (((max(xmax,pxmax)-min(xmin,pxmin))*(max(ymax,pymax)-min(ymin,pymin)))-((pxmax-pxmin)*(pymax-pymin)))/((pxmax-pxmin)*(pymax-pymin)); 
+        return (((max(xmax,pxmax)-min(xmin,pxmin))*(max(ymax,pymax)-min(ymin,pymin)))-((pxmax-pxmin)*(pymax-pymin)));
     }
 }
 
@@ -189,7 +189,7 @@ int rtree::rt_addchild(rtree* child_ptr){
                 seedi_ptr->get_increment(ToBeSeperated[i]->pxmin,ToBeSeperated[i]->pymin,ToBeSeperated[i]->pxmax,ToBeSeperated[i]->pymax);
             double IncrementForSeedj = 
                 seedj_ptr->get_increment(ToBeSeperated[i]->pxmin,ToBeSeperated[i]->pymin,ToBeSeperated[i]->pxmax,ToBeSeperated[i]->pymax);
-            if(IncrementForSeedi<=IncrementForSeedj){
+            if((IncrementForSeedi<=IncrementForSeedj)&&(new_node->get_child_size()<=(CHILD_SIZE-2)/2)){
                 new_node->rt_addchild(ToBeSeperated[i]);
                 //new_node->set_increment(ToBeSeperated[i]->pxmin,ToBeSeperated[i]->pymin,ToBeSeperated[i]->pxmax,ToBeSeperated[i]->pymax);
             }

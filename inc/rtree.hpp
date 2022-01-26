@@ -8,7 +8,7 @@
 #include <math.h> 
 #include <chrono>
 
-#define CHILD_SIZE 4
+#define CHILD_SIZE 16
 #define MAX_DOUBLE 1e300
 #define MIN_DOUBLE -1e300
 
@@ -78,6 +78,9 @@ public:
      * bounding box is extended to include given bounding box
      */
     double get_increment(double xmin, double ymin, double xmax, double ymax);
+    /* Get the child number
+     */
+    int get_child_size(){return child.size();}
     /* Change the current node's bounding box to fit the given
      * bounding box
      */

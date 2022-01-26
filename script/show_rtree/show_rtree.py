@@ -32,7 +32,8 @@ def readfile(path):
         lines = f.readlines()
     result = []
     for line in lines:
-        m = re.match(r'\[RTREE\] This is node ([-+]?\d+) at depth: ([-+]?\d+), the bounding box is \([-+]?(\d+\.?\d*),[-+]?(\d+\.?\d*)\), \([-+]?(\d+\.?\d*),[-+]?(\d+\.?\d*)\), leaf: (\d+), edge: (\d+)'+'\n', line)
+        m = re.match(r'\[RTREE\] This is node ([-+]?\d+) at depth: ([-+]?\d+), the bounding box is \(([-+]?\d+\.?\d*),([-+]?\d+\.?\d*)\), \(([-+]?\d+\.?\d*),([-+]?\d+\.?\d*)\), leaf: (\d+), edge: (\d+)'+'\n', line)
+        print(m.groups())
         index = int(m.groups()[0])
         depth = int(m.groups()[1])
         xmin  = float(m.groups()[2])
@@ -41,7 +42,6 @@ def readfile(path):
         ymax  = float(m.groups()[5])
         leaf  = int(m.groups()[6])
         edge  = int(m.groups()[7])
-        #print(m.groups())
         #print(line)
         result.append([index, depth, xmin, ymin, xmax, ymax, leaf, edge])
 
