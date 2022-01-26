@@ -6,6 +6,7 @@
 #include <queue>
 #include <utility>
 #include <math.h> 
+#include <chrono>
 
 #define CHILD_SIZE 4
 #define MAX_DOUBLE 1e300
@@ -40,6 +41,9 @@ public:
     rtree();
     rtree(double xmin, double ymin, double xmax, double ymax);
     ~rtree();
+    /* Get Rtree node pointer from index.
+     */
+    rtree* get_node(unsigned long id){return vrt.at(id);}
     /* Gives node's index in vrt
      */
     unsigned long get_index();

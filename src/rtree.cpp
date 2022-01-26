@@ -2,6 +2,8 @@
 
 std::vector<rtree*> rtree::vrt;
 
+int stack_cnt=0;
+
 double max(double a, double b){
     if(a>=b){
         return a;
@@ -107,6 +109,7 @@ int rtree::set_increment(double xmin, double ymin, double xmax, double ymax){
 int rtree::rt_addchild(rtree* child_ptr){
     /* Add the new child to the vector anyway.
      */
+    //stack_cnt++;
     child.push_back(child_ptr);
     child_ptr->set_parent(this);
     set_increment(child_ptr->pxmin,child_ptr->pymin,child_ptr->pxmax,child_ptr->pymax);
@@ -127,14 +130,14 @@ int rtree::rt_addchild(rtree* child_ptr){
     else{
         /* Choose the seeds with max increased area
          */
-        int seedi, seedj;
+        int seedi=0, seedj=0;
         double maxIncreasedArea=0;
         for(int i=0;i<child.size();i++){
             for(int j=i+1;j<child.size();j++){
                 //TODO
                 double IncreasedArea = 
                     child[i]->get_increment(child[j]->pxmin,child[j]->pymin,child[j]->pxmax,child[j]->pymax);
-                IncreasedArea -= (child[i]->get_area()+child[j]->get_area());
+                //IncreasedArea -= (child[j]->get_area());// the area of i had been substracted in "get_increment()"
                 if(IncreasedArea >= maxIncreasedArea){
                     maxIncreasedArea = IncreasedArea;
                     seedi = i;
@@ -174,8 +177,8 @@ int rtree::rt_addchild(rtree* child_ptr){
             new_node->set_leaf(true);
         }
         // Put seeds into both nodes
+        //new_node->set_increment(seedi_ptr->pxmin,seedi_ptr->pymin,seedi_ptr->pxmax,seedi_ptr->pymax);
         new_node->rt_addchild(seedi_ptr);
-        new_node->set_increment(seedi_ptr->pxmin,seedi_ptr->pymin,seedi_ptr->pxmax,seedi_ptr->pymax);
         child.push_back(seedj_ptr);
         set_increment(seedj_ptr->pxmin,seedj_ptr->pymin,seedj_ptr->pxmax,seedj_ptr->pymax);
         // Put the child in node with smallest increment.
@@ -188,7 +191,7 @@ int rtree::rt_addchild(rtree* child_ptr){
                 seedj_ptr->get_increment(ToBeSeperated[i]->pxmin,ToBeSeperated[i]->pymin,ToBeSeperated[i]->pxmax,ToBeSeperated[i]->pymax);
             if(IncrementForSeedi<=IncrementForSeedj){
                 new_node->rt_addchild(ToBeSeperated[i]);
-                new_node->set_increment(ToBeSeperated[i]->pxmin,ToBeSeperated[i]->pymin,ToBeSeperated[i]->pxmax,ToBeSeperated[i]->pymax);
+                //new_node->set_increment(ToBeSeperated[i]->pxmin,ToBeSeperated[i]->pymin,ToBeSeperated[i]->pxmax,ToBeSeperated[i]->pymax);
             }
             else{
                 child.push_back(ToBeSeperated[i]);
