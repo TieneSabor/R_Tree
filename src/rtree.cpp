@@ -94,7 +94,7 @@ double rtree::get_increment(double xmin, double ymin, double xmax, double ymax){
     }
     else{
         //return (((max(xmax,pxmax)-min(xmin,pxmin))*(max(ymax,pymax)-min(ymin,pymin)))-((pxmax-pxmin)*(pymax-pymin)))/((pxmax-pxmin)*(pymax-pymin)); 
-        return (((max(xmax,pxmax)-min(xmin,pxmin))*(max(ymax,pymax)-min(ymin,pymin)))-((pxmax-pxmin)*(pymax-pymin)));
+        return (((max(xmax,pxmax)-min(xmin,pxmin))*(max(ymax,pymax)-min(ymin,pymin))));
     }
 }
 

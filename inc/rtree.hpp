@@ -8,7 +8,7 @@
 #include <math.h> 
 #include <chrono>
 
-#define CHILD_SIZE 16
+#define CHILD_SIZE 5
 #define MAX_DOUBLE 1e300
 #define MIN_DOUBLE -1e300
 

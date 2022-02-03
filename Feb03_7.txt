@@ -1,0 +1,31 @@
+[RTREE] This is node 20 at depth: 2, the bounding box is (-770.543,-468.702), (-262.685,922.752), leaf: 0, edge: 1
+[RTREE] This is node 10 at depth: 2, the bounding box is (117.37,21.107), (376.252,847.391), leaf: 0, edge: 1
+[RTREE] This is node 15 at depth: 2, the bounding box is (-86.5008,-193.108), (-26.1829,582.849), leaf: 0, edge: 1
+[RTREE] This is node 23 at depth: 2, the bounding box is (-742.573,746.518), (-148.031,765.468), leaf: 0, edge: 1
+[RTREE] This is node 0 at depth: 1, the bounding box is (-770.543,-468.702), (376.252,922.752), leaf: 1, edge: 0
+[RTREE] This is node 12 at depth: 2, the bounding box is (-944.816,14.3454), (329.727,101.976), leaf: 0, edge: 1
+[RTREE] This is node 5 at depth: 2, the bounding box is (-330.651,-298.03), (125.652,152.803), leaf: 0, edge: 1
+[RTREE] This is node 9 at depth: 2, the bounding box is (-125.6,-772.709), (921.567,-490.188), leaf: 0, edge: 1
+[RTREE] This is node 13 at depth: 2, the bounding box is (-912.268,-426.42), (-429.115,-195.499), leaf: 0, edge: 1
+[RTREE] This is node 7 at depth: 1, the bounding box is (-944.816,-772.709), (921.567,152.803), leaf: 1, edge: 0
+[RTREE] This is node 11 at depth: 2, the bounding box is (693.295,-930.468), (844.455,-787.368), leaf: 0, edge: 1
+[RTREE] This is node 4 at depth: 2, the bounding box is (-763.993,-891.001), (-514.152,-599.763), leaf: 0, edge: 1
+[RTREE] This is node 17 at depth: 2, the bounding box is (-715.182,-900.531), (959.695,-458.413), leaf: 0, edge: 1
+[RTREE] This is node 18 at depth: 2, the bounding box is (-970.285,-887.335), (-539.501,-95.8842), leaf: 0, edge: 1
+[RTREE] This is node 21 at depth: 2, the bounding box is (-256.071,-926.344), (992.284,-418.23), leaf: 0, edge: 1
+[RTREE] This is node 14 at depth: 1, the bounding box is (-970.285,-930.468), (992.284,-95.8842), leaf: 1, edge: 0
+[RTREE] This is node 1 at depth: 2, the bounding box is (95.2613,-176.652), (644.855,845.904), leaf: 0, edge: 1
+[RTREE] This is node 3 at depth: 2, the bounding box is (-250.683,73.3867), (772.249,468.909), leaf: 0, edge: 1
+[RTREE] This is node 19 at depth: 2, the bounding box is (-660.044,-617.934), (413.927,716.208), leaf: 0, edge: 1
+[RTREE] This is node 22 at depth: 2, the bounding box is (175.633,-952.532), (596.115,683.847), leaf: 0, edge: 1
+[RTREE] This is node 25 at depth: 2, the bounding box is (-446.59,-486.895), (348.316,231.244), leaf: 0, edge: 1
+[RTREE] This is node 16 at depth: 1, the bounding box is (-660.044,-952.532), (772.249,845.904), leaf: 1, edge: 0
+[RTREE] This is node 6 at depth: 2, the bounding box is (-418.107,918.911), (827.847,930.246), leaf: 0, edge: 1
+[RTREE] This is node 2 at depth: 2, the bounding box is (-623.763,117.095), (169.891,985.652), leaf: 0, edge: 1
+[RTREE] This is node 24 at depth: 1, the bounding box is (-623.763,117.095), (827.847,985.652), leaf: 1, edge: 0
+[RTREE] This is node 8 at depth: 0, the bounding box is (-970.285,-952.532), (992.284,985.652), leaf: 0, edge: 0
+time spent ms: 10, the closest dist by violence: 36.9285, (x1,y1,x2,y2): (329.727,14.3454,-944.816,101.976)
+Search for k nearest neighbor. 
+dis = 36.9285
+rtree ms: 17, bf: 1643872112237307, af:1643872112237324
+the 1th nearest node to (0,0) (x1,y1,x2,y2): (-944.816,14.3454,329.727,101.976)

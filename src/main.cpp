@@ -8,28 +8,28 @@
 double violent_knn(double* a, int n, int k, double x, double y, std::priority_queue<std::pair<double,int>>* item_result){
     auto before = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     for(int i=0;i<n;i++){
-	double x1=a[4*i];
-	double y1=a[4*i+1];
-	double x2=a[4*i+2];
-	double y2=a[4*i+3];
-	double norm = sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
-	double dist;
-	
-	if(norm>1e-6)
-	{
-	 double cos = ( x2- x1)/norm;
-	 double sin = ( y2- y1)/norm;
-	 //double sin = sqrt(1-pow(cos,2));
-	 double xrot =  cos*(x-(x1+x2)/2) + sin*(y-( y1+ y2)/2);
-	 double yrot = -sin*(x-(x1+x2)/2) + cos*(y-( y1+ y2)/2);
-	 double xtrim = std::fmax(abs(xrot)-norm/2,0);
-	 double ytrim = std::fmax(abs(yrot),0);
-	 dist = sqrt(xtrim*xtrim+ytrim*ytrim);
-	}
-	else
-	{
-	 dist = sqrt(pow(x- x1,2)+pow(y- y1,2));
-	}
+        double x1=a[4*i];
+        double y1=a[4*i+1];
+        double x2=a[4*i+2];
+        double y2=a[4*i+3];
+        double norm = sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
+        double dist;
+        
+        if(norm>1e-6)
+        {
+            double cos = ( x2- x1)/norm;
+            double sin = ( y2- y1)/norm;
+            //double sin = sqrt(1-pow(cos,2));
+            double xrot =  cos*(x-(x1+x2)/2) + sin*(y-( y1+ y2)/2);
+            double yrot = -sin*(x-(x1+x2)/2) + cos*(y-( y1+ y2)/2);
+            double xtrim = std::fmax(abs(xrot)-norm/2,0);
+            double ytrim = std::fmax(abs(yrot),0);
+            dist = sqrt(xtrim*xtrim+ytrim*ytrim);
+        }
+        else
+        {
+            dist = sqrt(pow(x- x1,2)+pow(y- y1,2));
+        }
 /*
 	double cos;
 	if(norm==0){
@@ -46,10 +46,10 @@ double violent_knn(double* a, int n, int k, double x, double y, std::priority_qu
 	double ytrim = std::fmax(abs(yrot),0);
 	double dist = sqrt(xtrim*xtrim+ytrim*ytrim);
 */
-	item_result->push(std::make_pair(dist, i));
-	while(item_result->size()>k){
+        item_result->push(std::make_pair(dist, i));
+        while(item_result->size()>k){
             item_result->pop();
-    	}
+        }
     }
     auto after = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     std::pair<double,int> min = item_result->top();
@@ -101,21 +101,21 @@ int main(){
     */
 
     srand(time(NULL));
-    int testsize = 100;
+    int testsize = 10000;
     double* a = new double[4*testsize];
     double max=100,min=-100;
     for(int i=0; i<testsize; i++){
         double x1,y1,x2,y2;
-	x1 = (max - min) * rand() / (RAND_MAX + 1.0) + min;
-	y1 = (max - min) * rand() / (RAND_MAX + 1.0) + min;
-	x2 = (max - min) * rand() / (RAND_MAX + 1.0) + min;
-	y2 = (max - min) * rand() / (RAND_MAX + 1.0) + min;
-        first_node.rt_root()->rt_insert_edge(x1,y1,x2,y2);
-	a[4*(i)]   = x1;
-	a[4*(i)+1] = y1;
-	a[4*(i)+2] = x2;
-	a[4*(i)+3] = y2;
-	num++;
+	    x1 = (max - min) * rand() / (RAND_MAX + 1.0) + min;
+	    y1 = (max - min) * rand() / (RAND_MAX + 1.0) + min;
+	    x2 = (max - min) * rand() / (RAND_MAX + 1.0) + min;
+	    y2 = (max - min) * rand() / (RAND_MAX + 1.0) + min;
+        first_node.rt_root()->rt_insert_edge(x1,y1,x1,y1);
+	    a[4*(i)]   = x1;
+	    a[4*(i)+1] = y1;
+	    a[4*(i)+2] = x1;
+	    a[4*(i)+3] = y1;
+	    num++;
     }
 
     /*
@@ -128,17 +128,17 @@ int main(){
     first_node.rt_root()->rt_insert_edge(6,6,7,7);
     */
     root = first_node.rt_root();
-    root->rt_print(0);
+    //root->rt_print(0);
     
     //std::cout<<"Search in the tree. \r\n";
     std::vector<rtree*> result1, result2;
     std::priority_queue<std::pair<double,int>> q;
-    double px = 100,py = 100;
+    double px = 0,py = 0;
     //root->rt_search(px,py,&result1);
     //for(int i=0;i<result1.size();i++){
     //    std::cout<<"the node contains ("<<px<<","<<py<<"): "<<result1[i]->get_index()<<"\r\n";
     //}
-    violent_knn(a,num,1,px,py,&q);
+    violent_knn(a,testsize,1,px,py,&q);
     std::cout<<"Search for k nearest neighbor. \r\n";
     auto before = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     double dis = root->rt_k_nearest_items(px,py,1,&result2);
@@ -147,7 +147,8 @@ int main(){
     unsigned long ms = after-before;
     std::cout<<"rtree ms: "<<ms<<", bf: "<<before<<", af:"<<after<<std::endl;
     for(int i=result2.size()-1;i>=0;i--){
-        std::cout<<"the "<<result2.size()-i<<"th nearest node to ("<<px<<","<<py<<"): "<<result2[i]->get_index()<<"\r\n";
+        std::cout<<"the "<<result2.size()-i<<"th nearest node to ("<<px<<","<<py<<") (x1,y1,x2,y2): ("<<result2[i]->pxmin<<","<<result2[i]->pymin<<","<<result2[i]->pxmax<<","<<result2[i]->pymax<<")"<<std::endl;
+    
     }
     /*
     root->rt_delete(3);
